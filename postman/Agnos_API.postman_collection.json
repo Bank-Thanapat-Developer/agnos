@@ -1,0 +1,245 @@
+{
+	"info": {
+		"name": "Agnos API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "hospital_a",
+			"value": "https://hospital-a.127.0.0.1.nip.io"
+		},
+		{
+			"key": "hospital_b",
+			"value": "https://hospital-b.127.0.0.1.nip.io"
+		}
+	],
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hospital_a}}/health",
+					"host": ["{{hospital_a}}"],
+					"path": ["health"]
+				}
+			}
+		},
+		{
+			"name": "Login - Hospital A",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"if (responseJson.token) {",
+							"    pm.collectionVariables.set(\"token\", responseJson.token);",
+							"    console.log(\"Token saved successfully\");",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{hospital_a}}/login",
+					"host": ["{{hospital_a}}"],
+					"path": ["login"]
+				}
+			}
+		},
+		{
+			"name": "Login - Hospital B",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"if (responseJson.token) {",
+							"    pm.collectionVariables.set(\"token\", responseJson.token);",
+							"    console.log(\"Token saved successfully\");",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{hospital_b}}/login",
+					"host": ["{{hospital_b}}"],
+					"path": ["login"]
+				}
+			}
+		},
+		{
+			"name": "Create Patient - OPD (ผู้ป่วยนอก)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name_th\": \"สมชาย\",\n    \"last_name_th\": \"ใจดี\",\n    \"first_name_en\": \"Somchai\",\n    \"last_name_en\": \"Jaidee\",\n    \"date_of_birth\": \"1990-01-15\",\n    \"national_id\": \"1234567890123\",\n    \"phone_number\": \"0812345678\",\n    \"email\": \"somchai@email.com\",\n    \"ref_gender_id\": 1,\n    \"patient_type_id\": 2\n}"
+				},
+				"url": {
+					"raw": "{{hospital_a}}/patient",
+					"host": ["{{hospital_a}}"],
+					"path": ["patient"]
+				}
+			}
+		},
+		{
+			"name": "Create Patient - IPD (ผู้ป่วยใน)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name_th\": \"สมหญิง\",\n    \"last_name_th\": \"รักดี\",\n    \"first_name_en\": \"Somying\",\n    \"last_name_en\": \"Rakdee\",\n    \"date_of_birth\": \"1985-06-20\",\n    \"national_id\": \"9876543210987\",\n    \"phone_number\": \"0898765432\",\n    \"ref_gender_id\": 2,\n    \"patient_type_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{hospital_a}}/patient",
+					"host": ["{{hospital_a}}"],
+					"path": ["patient"]
+				}
+			}
+		},
+		{
+			"name": "Create Patient - EMS (ผู้ป่วยฉุกเฉิน)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name_th\": \"วิชัย\",\n    \"last_name_th\": \"สุขสม\",\n    \"first_name_en\": \"Wichai\",\n    \"last_name_en\": \"Suksom\",\n    \"date_of_birth\": \"1978-11-03\",\n    \"passport_id\": \"AB1234567\",\n    \"phone_number\": \"0861234567\",\n    \"ref_gender_id\": 1,\n    \"patient_type_id\": 3\n}"
+				},
+				"url": {
+					"raw": "{{hospital_a}}/patient",
+					"host": ["{{hospital_a}}"],
+					"path": ["patient"]
+				}
+			}
+		},
+		{
+			"name": "Search Patient - by National ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hospital_a}}/patient/search/1234567890123",
+					"host": ["{{hospital_a}}"],
+					"path": ["patient", "search", "1234567890123"]
+				}
+			}
+		},
+		{
+			"name": "Search Patient - by Passport ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hospital_a}}/patient/search/AB1234567",
+					"host": ["{{hospital_a}}"],
+					"path": ["patient", "search", "AB1234567"]
+				}
+			}
+		}
+	]
+}

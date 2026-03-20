@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+.env.example
+nginx/
+postman/
+docker/
+Makefile
+README.md
+*.md
+.DS_Store
